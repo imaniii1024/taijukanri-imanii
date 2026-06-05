@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weight Log</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Weight Log</p>
+          <h1>体重管理</h1>
+        </div>
+        <div class="goal-pill">
+          <span>目標</span>
+          <strong id="goalLabel">-- kg</strong>
+        </div>
+      </header>
+
+      <section class="summary-grid" aria-label="サマリー">
+        <article class="metric">
+          <span>最新体重</span>
+          <strong id="currentWeight">--</strong>
+          <small id="currentDate">未記録</small>
+        </article>
+        <article class="metric">
+          <span>開始から</span>
+          <strong id="totalChange">--</strong>
+          <small>最初の記録との差</small>
+        </article>
+        <article class="metric">
+          <span>最新BMI</span>
+          <strong id="currentBmi">--</strong>
+          <small id="bmiHint">身長を設定</small>
+        </article>
+        <article class="metric accent">
+          <span>目標まで</span>
+          <strong id="goalDiff">--</strong>
+          <small id="goalHint">目標体重を設定</small>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <form class="panel entry-panel" id="entryForm">
+          <div class="panel-head">
+            <h2>記録する</h2>
+            <button class="icon-button" type="button" id="todayButton" title="今日の日付に戻す">今日</button>
+          </div>
+          <label>
+            <span>日付</span>
+            <input id="dateInput" type="date" required />
+          </label>
+          <label>
+            <span>体重 kg</span>
+            <input id="weightInput" type="number" min="20" max="250" step="0.1" placeholder="例: 68.4" required />
+          </label>
+          <label>
+            <span>メモ</span>
+            <textarea id="memoInput" rows="3" placeholder="運動・食事・体調など"></textarea>
+          </label>
+          <button class="primary-button" type="submit">保存</button>
+          <p class="form-note" id="saveNote">1日1回。同じ日付は最新データで上書きします。</p>
+        </form>
+
+        <section class="panel chart-panel">
+          <div class="panel-head">
+            <h2>推移</h2>
+            <div class="segmented" aria-label="表示期間">
+              <button type="button" class="active" data-range="30">30日</button>
+              <button type="button" data-range="90">90日</button>
+              <button type="button" data-range="all">全期間</button>
+            </div>
+          </div>
+          <div class="chart-legend" aria-label="グラフ凡例">
+            <span><i class="legend-weight"></i>体重</span>
+            <span><i class="legend-bmi"></i>BMI</span>
+            <span><i class="legend-goal"></i>目標体重</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="weightChart" width="900" height="360" aria-label="体重とBMIの推移グラフ"></canvas>
+            <p class="empty-state" id="chartEmpty">2件以上記録すると体重とBMIのグラフが表示されます</p>
+          </div>
+        </section>
+      </section>
+
+      <section class="workspace bottom">
+        <section class="panel settings-panel">
+          <div class="panel-head">
+            <h2>基礎設定</h2>
+          </div>
+          <label>
+            <span>身長 cm</span>
+            <input id="heightInput" type="number" min="80" max="240" step="0.1" placeholder="例: 170.0" />
+          </label>
+          <label>
+            <span>目標体重 kg</span>
+            <input id="goalInput" type="number" min="20" max="250" step="0.1" placeholder="例: 63.0" />
+          </label>
+          <div class="button-row">
+            <button class="secondary-button" type="button" id="saveGoalButton">更新</button>
+            <button class="ghost-button" type="button" id="exportButton">CSV</button>
+          </div>
+        </section>
+
+        <section class="panel history-panel">
+          <div class="panel-head">
+            <h2>履歴</h2>
+            <span id="entryCount">0件</span>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </section>
+      </section>
+    </main>
+
+    <template id="historyItemTemplate">
+      <article class="history-item">
+        <div>
+          <time></time>
+          <strong></strong>
+          <p></p>
+        </div>
+        <button type="button" title="削除">削除</button>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
